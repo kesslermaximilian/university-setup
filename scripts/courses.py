@@ -29,9 +29,17 @@ class Courses(list):
         list.__init__(self, self.read_files())
 
     def read_files(self):
-        course_directories = [x for x in ROOT.iterdir() if x.is_dir()]
+        course_directories = [x for x in ROOT.iterdir() if x.is_dir() and not x in self.ignored_courses()]
         _courses = [Course(path) for path in course_directories]
         return sorted(_courses, key=lambda c: c.name)
+
+    def ignored_courses(self):
+        with open(ROOT / '.courseignore') as ignore:
+            lines = ignore.readlines()
+            paths = []
+            for line in lines:
+                paths.append(ROOT / line.strip())
+            return paths
 
     @property
     def current(self):
