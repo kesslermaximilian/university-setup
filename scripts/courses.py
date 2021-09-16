@@ -3,8 +3,7 @@ from pathlib import Path
 import yaml
 
 from lectures import Lectures
-from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE
-
+from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE
 class Course():
     def __init__(self, path):
         self.path = path
@@ -34,7 +33,7 @@ class Courses(list):
         return sorted(_courses, key=lambda c: c.name)
 
     def ignored_courses(self):
-        with open(ROOT / '.courseignore') as ignore:
+        with open(ROOT / COURSE_IGNORE_FILE) as ignore:
             lines = ignore.readlines()
             paths = []
             for line in lines:

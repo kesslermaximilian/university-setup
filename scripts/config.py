@@ -17,3 +17,4 @@ CURRENT_COURSE_WATCH_FILE = Path('/tmp/current_course').resolve()
 ROOT = Path('~/Uni/semester-5').expanduser()
 DATE_FORMAT = '%a %d %b %Y %H:%M'
 LOCALE = "de_DE.utf8"
+COURSE_IGNORE_FILE = '.courseignore'
