@@ -1,8 +1,10 @@
 from datetime import datetime
 from pathlib import Path
 
+
 def get_week(d=datetime.today()):
     return (int(d.strftime("%W")) + 52 - 5) % 52
+
 
 # default is 'primary', if you are using a separate calendar for your course schedule,
 # your calendarId (which you can find by going to your Google Calendar settings, selecting
@@ -18,6 +20,6 @@ ROOT = Path('~/Uni/semester-5').expanduser()
 DATE_FORMAT = '%a %d %b %Y'
 LOCALE = "de_DE.utf8"
 COURSE_IGNORE_FILE = '.courseignore'
-COURSE_INFO_FILE  = 'info.yaml'
+COURSE_INFO_FILE = 'info.yaml'
 DEFAULT_MASTER_FILE_NAME = 'master.tex'
 MAX_LEN = 40
