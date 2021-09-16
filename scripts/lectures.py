@@ -8,7 +8,7 @@ import re
 import subprocess
 
 
-from config import get_week, DATE_FORMAT, CURRENT_COURSE_ROOT, LOCALE
+from config import get_week, DATE_FORMAT, CURRENT_COURSE_ROOT, LOCALE, DEFAULT_MASTER_FILE_NAME
 
 # TODO
 locale.setlocale(locale.LC_TIME, LOCALE)
@@ -58,7 +58,10 @@ class Lectures(list):
     def __init__(self, course):
         self.course = course
         self.root = course.path
-        self.master_file = self.root / 'master.tex'
+        if 'master_file' in course.info:
+            self.master_file = self.root / course.info['master_file']
+        else:
+            self.master_file = self.root / DEFAULT_MASTER_FILE_NAME
         list.__init__(self, self.read_files())
 
     def read_files(self):
