@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-from pathlib import Path
 import subprocess
 
 from lectures import Lectures, number2filename
@@ -15,6 +14,7 @@ class Notes:
             self.info = []
         if 'path' in self.info:
             self.root = course.path / self.info['path']
+            self.root.mkdir(parents=True, exist_ok=True)
         else:
             self.root = course.path
         if 'master_file' in self.info:
