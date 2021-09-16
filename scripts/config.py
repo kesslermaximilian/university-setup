@@ -20,3 +20,4 @@ LOCALE = "de_DE.utf8"
 COURSE_IGNORE_FILE = '.courseignore'
 COURSE_INFO_FILE  = 'info.yaml'
 DEFAULT_MASTER_FILE_NAME = 'master.tex'
+MAX_LEN = 40
