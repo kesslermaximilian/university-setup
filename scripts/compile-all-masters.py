@@ -2,8 +2,9 @@
 from courses import Courses
 
 for course in Courses():
-    lectures = course.lectures
+    script = course.script
+    lectures = script.lectures
 
     r = lectures.parse_range_string('all')
-    lectures.update_lectures_in_master(r)
-    lectures.compile_master()
+    script.update_lectures_in_master(r)
+    script.compile_master()
