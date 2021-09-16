@@ -2,7 +2,8 @@
 from courses import Courses
 from rofi import rofi
 
-lectures = Courses().current.lectures
+script = Courses().current.script
+lectures = script.lectures
 
 commands = ['last', 'prev-last', 'all', 'prev']
 options = ['Current lecture', 'Last two lectures', 'All lectures', 'Previous lectures']
@@ -18,5 +19,5 @@ else:
     command = selected
 
 lecture_range = lectures.parse_range_string(command)
-lectures.update_lectures_in_master(lecture_range)
-lectures.compile_master()
+script.update_lectures_in_master(lecture_range)
+script.compile_master()
