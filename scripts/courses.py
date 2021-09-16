@@ -3,13 +3,13 @@ from pathlib import Path
 import yaml
 
 from lectures import Lectures
-from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE
+from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE, COURSE_INFO_FILE
 class Course():
     def __init__(self, path):
         self.path = path
         self.name = path.stem
 
-        self.info = yaml.load((path / 'info.yaml').open())
+        self.info = yaml.load((path / COURSE_INFO_FILE).open())
         self._lectures = None
 
     @property
