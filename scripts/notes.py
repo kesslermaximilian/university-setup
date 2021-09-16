@@ -53,8 +53,12 @@ class Notes:
 
     def update_lectures_in_master(self, r):
         header, footer = self.get_header_footer(self.master_file)
+        if self.lectures.root.relative_to(self.root) == Path('.'):
+            input_command = r'\input{'
+        else:
+            input_command = r'\import{' + str(self.lectures.root.relative_to(self.root)) + '/}{'
         body = ''.join(
-            ' ' * 4 + r'\input{' + number2filename(number) + '}\n' for number in r)
+            ' ' * 4 + input_command + number2filename(number) + '}\n' for number in r)
         self.master_file.write_text(header + body + footer)
 
     def compile_master(self):
