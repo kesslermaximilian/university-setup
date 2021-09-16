@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-
+from pathlib import Path, PurePath
+import os
 import locale
 import re
 import subprocess
@@ -55,18 +56,18 @@ class Lecture:
 
 
 class Lectures(list):
-    def __init__(self, script):
-        self.course = script.course
-        self.script = script
-        if 'lectures' in script.info:
-            self.info = script.info['lectures']
+    def __init__(self, notes):
+        self.course = notes.course
+        self.notes = notes
+        if 'lectures' in notes.info:
+            self.info = notes.info['lectures']
         else:
             self.info = []
         if 'path' in self.info:
-            self.root = script.root / self.info['path']
+            self.root = notes.root / self.info['path']
             self.root.mkdir(parents=True, exist_ok=True)
         else:
-            self.root = script.root
+            self.root = notes.root
         list.__init__(self, self.read_files())
 
     def read_files(self):
@@ -110,8 +111,10 @@ class Lectures(list):
         today = datetime.today()
         date = today.strftime(DATE_FORMAT)
 
+        vimtex_root_str = f"%! TEX root = {str(os.path.relpath(self.notes.master_file, self.root))}\n"
+        header_str = DEFAULT_NEW_LECTURE_HEADER.format(number=new_lecture_number, date=date)
         new_lecture_path.touch()
-        new_lecture_path.write_text(DEFAULT_NEW_LECTURE_HEADER.format(number=new_lecture_number, date=date))
+        new_lecture_path.write_text(vimtex_root_str + header_str)
 
         self.read_files()
 
