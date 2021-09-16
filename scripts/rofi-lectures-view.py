@@ -2,7 +2,7 @@
 from courses import Courses
 from rofi import rofi
 
-script = Courses().current.script
+script = Courses().current.notes
 lectures = script.lectures
 
 commands = ['last', 'prev-last', 'all', 'prev']

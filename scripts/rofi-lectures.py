@@ -4,7 +4,7 @@ from rofi import rofi
 from utils import generate_short_title
 from config import MAX_LEN
 
-script = Courses().current.script
+script = Courses().current.notes
 lectures = script.lectures
 
 sorted_lectures = sorted(lectures, key=lambda l: -l.number)

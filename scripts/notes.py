@@ -5,11 +5,12 @@ import subprocess
 from lectures import Lectures, number2filename
 from config import *
 
-class Script:
+
+class Notes:
     def __init__(self, course):
         self.course = course
-        if 'script' in course.info:
-            self.info = course.info['script']
+        if 'notes' in course.info:
+            self.info = course.info['notes']
         else:
             self.info = []
         if 'path' in self.info:
@@ -70,4 +71,3 @@ class Script:
         if not self._lectures:
             self._lectures = Lectures(self)
         return self._lectures
-

@@ -3,7 +3,7 @@ from pathlib import Path
 import yaml
 
 from lectures import Lectures
-from script import Script
+from notes import Notes
 from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE, \
     COURSE_INFO_FILE
 
@@ -14,13 +14,13 @@ class Course:
         self.name = path.stem
 
         self.info = yaml.safe_load((path / COURSE_INFO_FILE).open())
-        self._script = None
+        self._notes = None
 
     @property
-    def script(self):
-        if not self._script:
-            self._script = Script(self)
-        return self._script
+    def notes(self):
+        if not self._notes:
+            self._notes = Notes(self)
+        return self._notes
 
     def __eq__(self, other):
         if other is None:

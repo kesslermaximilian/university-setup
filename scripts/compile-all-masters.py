@@ -2,7 +2,7 @@
 from courses import Courses
 
 for course in Courses():
-    script = course.script
+    script = course.notes
     lectures = script.lectures
 
     r = lectures.parse_range_string('all')
