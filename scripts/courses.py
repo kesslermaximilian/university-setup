@@ -3,8 +3,11 @@ from pathlib import Path
 import yaml
 
 from lectures import Lectures
-from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE, COURSE_INFO_FILE
-class Course():
+from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE, \
+    COURSE_INFO_FILE
+
+
+class Course:
     def __init__(self, path):
         self.path = path
         self.name = path.stem
@@ -19,26 +22,29 @@ class Course():
         return self._lectures
 
     def __eq__(self, other):
-        if other == None:
+        if other is None:
             return False
         return self.path == other.path
 
+
+def ignored_courses():
+    with open(ROOT / COURSE_IGNORE_FILE) as ignore:
+        lines = ignore.readlines()
+        paths = []
+        for line in lines:
+            paths.append(ROOT / line.strip())
+        return paths
+
+
+def read_files():
+    course_directories = [x for x in ROOT.iterdir() if x.is_dir() and x not in ignored_courses()]
+    _courses = [Course(path) for path in course_directories]
+    return sorted(_courses, key=lambda c: c.name)
+
+
 class Courses(list):
     def __init__(self):
-        list.__init__(self, self.read_files())
-
-    def read_files(self):
-        course_directories = [x for x in ROOT.iterdir() if x.is_dir() and not x in self.ignored_courses()]
-        _courses = [Course(path) for path in course_directories]
-        return sorted(_courses, key=lambda c: c.name)
-
-    def ignored_courses(self):
-        with open(ROOT / COURSE_IGNORE_FILE) as ignore:
-            lines = ignore.readlines()
-            paths = []
-            for line in lines:
-                paths.append(ROOT / line.strip())
-            return paths
+        list.__init__(self, read_files())
 
     @property
     def current(self):

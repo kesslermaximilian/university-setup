@@ -1,14 +1,11 @@
 #!/usr/bin/python3
 
-import os
-from datetime import datetime
-from pathlib import Path
 import locale
 import re
 import subprocess
+from datetime import datetime
 
-
-from config import get_week, DATE_FORMAT, CURRENT_COURSE_ROOT, LOCALE, DEFAULT_MASTER_FILE_NAME
+from config import get_week, DATE_FORMAT, LOCALE, DEFAULT_MASTER_FILE_NAME
 
 # TODO
 locale.setlocale(locale.LC_TIME, LOCALE)
@@ -17,16 +14,18 @@ locale.setlocale(locale.LC_TIME, LOCALE)
 def number2filename(n):
     return 'lec_{0:02d}.tex'.format(n)
 
+
 def filename2number(s):
     return int(str(s).replace('.tex', '').replace('lec_', ''))
 
-class Lecture():
+
+class Lecture:
     def __init__(self, file_path, course):
         with file_path.open() as f:
             for line in f:
-                lecture_match = re.search(r'lecture\{(.*?)\}\{(.*?)\}\{(.*)\}', line)
+                lecture_match = re.search(r'lecture{(.*?)}{(.*?)}{(.*)}', line)
                 if lecture_match:
-                    break;
+                    break
 
         # number = int(lecture_match.group(1))
 
@@ -108,7 +107,7 @@ class Lectures(list):
 
                 if 'start lectures' in line:
                     part = 1
-        return (header, footer)
+        return header, footer
 
     def update_lectures_in_master(self, r):
         header, footer = self.get_header_footer(self.master_file)
@@ -137,10 +136,9 @@ class Lectures(list):
 
         self.read_files()
 
+        lec = Lecture(new_lecture_path, self.course)
 
-        l = Lecture(new_lecture_path, self.course)
-
-        return l
+        return lec
 
     def compile_master(self):
         result = subprocess.run(
