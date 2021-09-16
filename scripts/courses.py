@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from pathlib import Path
 import yaml
+import warnings
 
 from lectures import Lectures
 from notes import Notes
@@ -12,8 +13,13 @@ class Course:
     def __init__(self, path):
         self.path = path
         self.name = path.stem
-
-        self.info = yaml.safe_load((path / COURSE_INFO_FILE).open())
+        if (path / COURSE_INFO_FILE).is_file():
+            self.info = yaml.safe_load((path / COURSE_INFO_FILE).open())
+        else:
+            warnings.warn(f"No course info file found in directory '{path.stem}'. Place a {COURSE_INFO_FILE} "
+                          f"file in the directory or add the directory to the course ignore file named"
+                          f" '{COURSE_IGNORE_FILE}' in your root directory ({ROOT})")
+            self.info = {'title': path.stem, 'short': path.stem}
         self._notes = None
 
     @property
@@ -29,12 +35,14 @@ class Course:
 
 
 def ignored_courses():
-    with open(ROOT / COURSE_IGNORE_FILE) as ignore:
-        lines = ignore.readlines()
-        paths = []
-        for line in lines:
-            paths.append(ROOT / line.strip())
-        return paths
+    if (ROOT / COURSE_IGNORE_FILE).is_file():
+        with open(ROOT / COURSE_IGNORE_FILE) as ignore:
+            lines = ignore.readlines()
+            paths = []
+            for line in lines:
+                paths.append(ROOT / line.strip())
+            return paths
+    return []
 
 
 def read_files():
