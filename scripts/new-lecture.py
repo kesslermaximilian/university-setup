@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from courses import Courses
 
 script = Courses().current.notes
