@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 import subprocess
+from pathlib import Path
 
 from lectures import Lectures, number2filename
-from config import *
+from config import DEFAULT_MASTER_FILE_NAME, LECTURE_START_MARKER, LECTURE_END_MARKER
 
 
 class Notes:

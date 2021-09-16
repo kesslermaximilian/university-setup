@@ -19,4 +19,5 @@ DEFAULT_MASTER_FILE_NAME = 'master.tex'
 MAX_LEN = 40
 LECTURE_START_MARKER = 'start lectures'
 LECTURE_END_MARKER = 'end lectures'
-DEFAULT_NEW_LECTURE_HEADER = r'\lecture{{{number}}}{{{date}}}{{}}'
+DEFAULT_NEW_LECTURE_HEADER = r'\lecture{{{number}}}{{{date}}}{{{title}}}'
+DEFAULT_LECTURE_SEARCH_REGEX = r'lecture{(.*?)}{(.*?)}{(.*)}'

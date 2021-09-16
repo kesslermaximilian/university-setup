@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-from pathlib import Path, PurePath
-import os
 import locale
+import os
 import re
 import subprocess
 from datetime import datetime
 
-from config import DATE_FORMAT, LOCALE, DEFAULT_MASTER_FILE_NAME, DEFAULT_NEW_LECTURE_HEADER
+from config import DATE_FORMAT, LOCALE, DEFAULT_NEW_LECTURE_HEADER, DEFAULT_LECTURE_SEARCH_REGEX
 from utils import get_week
 
 # TODO
@@ -25,7 +24,7 @@ class Lecture:
     def __init__(self, file_path, course):
         with file_path.open() as f:
             for line in f:
-                lecture_match = re.search(r'lecture{(.*?)}{(.*?)}{(.*)}', line)
+                lecture_match = re.search(DEFAULT_LECTURE_SEARCH_REGEX, line)
                 if lecture_match:
                     break
 
@@ -112,7 +111,7 @@ class Lectures(list):
         date = today.strftime(DATE_FORMAT)
 
         vimtex_root_str = f"%! TEX root = {str(os.path.relpath(self.notes.master_file, self.root))}\n"
-        header_str = DEFAULT_NEW_LECTURE_HEADER.format(number=new_lecture_number, date=date)
+        header_str = DEFAULT_NEW_LECTURE_HEADER.format(number=new_lecture_number, date=date, title='Untitled')
         new_lecture_path.touch()
         new_lecture_path.write_text(vimtex_root_str + header_str)
 
