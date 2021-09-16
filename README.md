@@ -1,3 +1,9 @@
+# Fork
+
+This fork contains my personal customatizations to the setup Gilles uses. The main point is that the `info.yaml` file now contains options for specifying the subfolders for the notes, as well as subfolders for the lectures. This helps me re-use the `current_course` directory for other data as well (e.g. my exercise sheets) while having a single dedicated folder for my lecture notes. It is implemented with an additional `Notes` class that handles this. Possibly, one can extend this to e.g. an `Exercises` class that one can add to each course etc.   
+
+Additionally, this version features a `.courseignore` file you can place in the `ROOT` folder to ignore some directories for the courses.
+
 # Managing LaTeX lecture notes
 
 This repository complements my [third blog post about my note taking setup](https://castel.dev/post/lecture-notes-3).
