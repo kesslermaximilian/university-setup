@@ -1,3 +1,4 @@
 *.swp
 scripts/__pycache__
 scripts/test.py
+scripts/.idea
