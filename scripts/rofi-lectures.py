@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 from courses import Courses
 from rofi import rofi
-from utils import generate_short_title, MAX_LEN
+from utils import generate_short_title
+from config import MAX_LEN
 
-lectures = Courses().current.lectures
+script = Courses().current.script
+lectures = script.lectures
 
 sorted_lectures = sorted(lectures, key=lambda l: -l.number)
 
@@ -28,5 +30,5 @@ key, index, selected = rofi('Select lecture', options, [
 if key == 0:
     sorted_lectures[index].edit()
 elif key == 1:
-    new_lecture = lectures.new_lecture()
+    new_lecture = script.new_lecture()
     new_lecture.edit()
