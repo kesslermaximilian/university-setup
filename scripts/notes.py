@@ -21,6 +21,10 @@ class Notes:
             self.master_file = self.root / self.info['master_file']
         else:
             self.master_file = self.root / DEFAULT_MASTER_FILE_NAME
+        if 'full_file' in self.info:
+            self.full_file = self.root / self.info['full_file']
+        else:
+            self.full_file = None
         self._lectures = None
 
     @staticmethod
@@ -49,17 +53,25 @@ class Notes:
             self.update_lectures_in_master([1])
         else:
             self.update_lectures_in_master([lec.number - 1, lec.number])
+        self.update_lectures_in_full(self.lectures.parse_range_string('all'))
         return lec
 
-    def update_lectures_in_master(self, r):
-        header, footer = self.get_header_footer(self.master_file)
+    def update_lectures_in_file(self, filename, lecture_list):
+        header, footer = self.get_header_footer(filename)
         if self.lectures.root.relative_to(self.root) == Path('.'):
             input_command = r'\input{'
         else:
             input_command = r'\import{' + str(self.lectures.root.relative_to(self.root)) + '/}{'
         body = ''.join(
-            ' ' * 4 + input_command + number2filename(number) + '}\n' for number in r)
-        self.master_file.write_text(header + body + footer)
+            ' ' * 4 + input_command + number2filename(number) + '}\n' for number in lecture_list)
+        filename.write_text(header + body + footer)
+
+    def update_lectures_in_master(self, lecture_list):
+        self.update_lectures_in_file(self.master_file, lecture_list)
+
+    def update_lectures_in_full(self, lecture_list):
+        if self.full_file:
+            self.update_lectures_in_file(self.full_file, lecture_list)
 
     def compile_master(self):
         result = subprocess.run(
