@@ -63,6 +63,7 @@ class Lectures(list):
             self.info = []
         if 'path' in self.info:
             self.root = script.root / self.info['path']
+            self.root.mkdir(parents=True, exist_ok=True)
         else:
             self.root = script.root
         list.__init__(self, self.read_files())
