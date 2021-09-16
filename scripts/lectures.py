@@ -83,7 +83,7 @@ class Lectures(list):
         elif string == 'prev':
             return self[-1].number - 1
 
-    def parse_range_string(self, arg):
+    def parse_range_string_section(self, arg):
         all_numbers = [lecture.number for lecture in self]
         if 'all' in arg:
             return all_numbers
@@ -93,6 +93,10 @@ class Lectures(list):
             return list(set(all_numbers) & set(range(start, end + 1)))
 
         return [self.parse_lecture_spec(arg)]
+
+    def parse_range_string(self, arg):
+        sets = [set(self.parse_range_string_section(part)) for part in arg.split(',')]
+        return list(set.union(*sets))
 
     def new_lecture(self):
         if len(self) != 0:
