@@ -9,7 +9,7 @@ class Course():
         self.path = path
         self.name = path.stem
 
-        self.info = yaml.load((path / COURSE_INFO_FILE).open())
+        self.info = yaml.safe_load((path / COURSE_INFO_FILE).open())
         self._lectures = None
 
     @property
