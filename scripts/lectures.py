@@ -5,7 +5,7 @@ import re
 import subprocess
 from datetime import datetime
 
-from config import get_week, DATE_FORMAT, LOCALE, DEFAULT_MASTER_FILE_NAME
+from config import get_week, DATE_FORMAT, LOCALE, DEFAULT_MASTER_FILE_NAME, DEFAULT_NEW_LECTURE_HEADER
 
 # TODO
 locale.setlocale(locale.LC_TIME, LOCALE)
@@ -110,11 +110,10 @@ class Lectures(list):
         date = today.strftime(DATE_FORMAT)
 
         new_lecture_path.touch()
-        new_lecture_path.write_text(f'\\lecture{{{new_lecture_number}}}{{{date}}}{{}}\n')
+        new_lecture_path.write_text(DEFAULT_NEW_LECTURE_HEADER.format(number=new_lecture_number, date=date))
 
         self.read_files()
 
         lec = Lecture(new_lecture_path, self.course)
 
         return lec
-

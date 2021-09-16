@@ -35,7 +35,7 @@ class Notes:
         with filepath.open() as f:
             for line in f:
                 # order of if-statements is important here!
-                if 'end lectures' in line:
+                if LECTURE_END_MARKER in line:
                     part = 2
 
                 if part == 0:
@@ -43,7 +43,7 @@ class Notes:
                 if part == 2:
                     footer += line
 
-                if 'start lectures' in line:
+                if LECTURE_START_MARKER in line:
                     part = 1
         return header, footer
 
