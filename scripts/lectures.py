@@ -5,7 +5,8 @@ import re
 import subprocess
 from datetime import datetime
 
-from config import get_week, DATE_FORMAT, LOCALE, DEFAULT_MASTER_FILE_NAME, DEFAULT_NEW_LECTURE_HEADER
+from config import DATE_FORMAT, LOCALE, DEFAULT_MASTER_FILE_NAME, DEFAULT_NEW_LECTURE_HEADER
+from utils import get_week
 
 # TODO
 locale.setlocale(locale.LC_TIME, LOCALE)

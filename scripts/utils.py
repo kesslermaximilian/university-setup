@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from config import MAX_LEN
 
 
@@ -15,3 +17,7 @@ def generate_short_title(title):
         short_title = title[:MAX_LEN - len(' ... ')] + ' ... '
     short_title = short_title.replace('$', '')
     return short_title
+
+
+def get_week(d=datetime.today()):
+    return (int(d.strftime("%W")) + 52 - 5) % 52
