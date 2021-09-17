@@ -3,7 +3,8 @@ import subprocess
 from pathlib import Path
 from typing import Dict
 
-from config import LECTURE_START_MARKER, LECTURE_END_MARKER, DEFAULT_IMPORT_INDENTATION
+from config import LECTURE_START_MARKER, LECTURE_END_MARKER, DEFAULT_IMPORT_INDENTATION, \
+    DEFAULT_LATEX_COUNTER_AUX_FILE_EXTENSION
 from edit import edit
 from lectures import Lectures, number2filename
 from parse_counters import parse_counters, dict2setcounters
@@ -59,7 +60,10 @@ class Notes:
         if not setcounters:
             return ''
         if lec - 1 not in lecture_list and self.full_file:
-            return dict2setcounters(parse_counters(self.full_file.with_suffix('.counters'), {'lecture': lec}))
+            return dict2setcounters(parse_counters(
+                self.full_file.with_suffix(DEFAULT_LATEX_COUNTER_AUX_FILE_EXTENSION),
+                {'lecture': lec}
+            ))
         return ''
 
     def update_lectures_in_file(self, filename, lecture_list, setcounters=False):
