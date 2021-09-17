@@ -2,6 +2,7 @@
 import re
 from pathlib import Path
 from typing import Dict
+from config import DEFAULT_IMPORT_INDENTATION
 
 
 def parse_counters(filepath: Path, break_point: Dict) -> Dict:
@@ -20,8 +21,5 @@ def parse_counters(filepath: Path, break_point: Dict) -> Dict:
 
 def dict2setcounters(counters: Dict):
     counters_as_list = [(counter, counters[counter]) for counter in counters.keys()]
-    return ''.join(' ' * 4 + r'\setcounter{' + counter + '}{' + str(num) + '}\n' for (counter, num) in counters_as_list)
-
-
-# print(dict2setcounters(parse_counters(Path('~/Uni/semester-5/topologie-1/notes/master.counters').expanduser(),
-#                                     {'exercise': 5})))
+    return ''.join(' ' * DEFAULT_IMPORT_INDENTATION + r'\setcounter{' + counter + '}{' + str(num) + '}\n'
+                   for (counter, num) in counters_as_list)

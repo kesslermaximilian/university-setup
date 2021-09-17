@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 
 from lectures import Lectures, number2filename
-from config import DEFAULT_MASTER_FILE_NAME, LECTURE_START_MARKER, LECTURE_END_MARKER
+from config import DEFAULT_MASTER_FILE_NAME, LECTURE_START_MARKER, LECTURE_END_MARKER, DEFAULT_IMPORT_INDENTATION
 from parse_counters import parse_counters, dict2setcounters
 
 
@@ -63,12 +63,12 @@ class Notes:
             input_command = r'\input{'
         else:
             input_command = r'\import{' + str(self.lectures.root.relative_to(self.root)) + '/}{'
-        return ' ' * 4 + input_command + number2filename(num) + '}\n'
+        return ' ' * DEFAULT_IMPORT_INDENTATION + input_command + number2filename(num) + '}\n'
 
     def set_counters(self, lecture_list, lec, setcounters=False):
         if not setcounters:
             return ''
-        if lec - 1 not in lecture_list:
+        if lec - 1 not in lecture_list and self.full_file:
             return dict2setcounters(parse_counters(self.full_file.with_suffix('.counters'), {'lecture': lec}))
         return ''
 
