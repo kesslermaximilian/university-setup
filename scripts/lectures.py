@@ -2,7 +2,7 @@
 import locale
 import os
 import re
-import subprocess
+import warnings
 from datetime import datetime
 
 from config import DATE_FORMAT, LOCALE, DEFAULT_NEW_LECTURE_HEADER, DEFAULT_LECTURE_SEARCH_REGEX
@@ -29,10 +29,14 @@ class Lecture:
                 if lecture_match:
                     break
 
-        # number = int(lecture_match.group(1))
         if lecture_match:
             date_str = lecture_match.group(2)
-            date = datetime.strptime(date_str, DATE_FORMAT)
+            try:
+                date = datetime.strptime(date_str, DATE_FORMAT)
+            except ValueError:
+                warnings.warn(f"Invalid date format found in lecture file {file_path}. Specify time in format"
+                              f"'{DATE_FORMAT}' that you set in the config.py file.")
+                date = datetime.min
             week = get_week(date)
 
             title = lecture_match.group(3)
