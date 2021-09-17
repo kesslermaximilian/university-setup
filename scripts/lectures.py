@@ -30,12 +30,17 @@ class Lecture:
                     break
 
         # number = int(lecture_match.group(1))
+        if lecture_match:
+            date_str = lecture_match.group(2)
+            date = datetime.strptime(date_str, DATE_FORMAT)
+            week = get_week(date)
 
-        date_str = lecture_match.group(2)
-        date = datetime.strptime(date_str, DATE_FORMAT)
-        week = get_week(date)
+            title = lecture_match.group(3)
+        else:
+            date = datetime.min
+            week = get_week(date)
 
-        title = lecture_match.group(3)
+            title = 'Error while parsing lecture file'
 
         self.file_path = file_path
         self.date = date
