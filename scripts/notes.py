@@ -4,6 +4,7 @@ from pathlib import Path
 
 from lectures import Lectures, number2filename
 from config import DEFAULT_MASTER_FILE_NAME, LECTURE_START_MARKER, LECTURE_END_MARKER
+from parse_counters import parse_counters, dict2setcounters
 
 
 class Notes:
@@ -23,9 +24,9 @@ class Notes:
         else:
             self.master_file = self.root / DEFAULT_MASTER_FILE_NAME
         if 'full_file' in self.info:
-            self.full_file = self.root / self.info['full_file']
+            self.full_file: Path = self.root / self.info['full_file']
         else:
-            self.full_file = None
+            self.full_file: Path = None
         self._lectures = None
 
     @staticmethod
@@ -57,18 +58,28 @@ class Notes:
         self.update_lectures_in_full(self.lectures.parse_range_string('all'))
         return lec
 
-    def update_lectures_in_file(self, filename, lecture_list):
-        header, footer = self.get_header_footer(filename)
+    def input_lecture_command(self, num: int):
         if self.lectures.root.relative_to(self.root) == Path('.'):
             input_command = r'\input{'
         else:
             input_command = r'\import{' + str(self.lectures.root.relative_to(self.root)) + '/}{'
-        body = ''.join(
-            ' ' * 4 + input_command + number2filename(number) + '}\n' for number in lecture_list)
+        return ' ' * 4 + input_command + number2filename(num) + '}\n'
+
+    def set_counters(self, lecture_list, lec, setcounters=False):
+        if not setcounters:
+            return ''
+        if lec - 1 not in lecture_list:
+            return dict2setcounters(parse_counters(self.full_file.with_suffix('.counters'), {'lecture': lec}))
+        return ''
+
+    def update_lectures_in_file(self, filename, lecture_list, setcounters=False):
+        header, footer = self.get_header_footer(filename)
+        body = ''.join([self.set_counters(lecture_list, num, setcounters) + self.input_lecture_command(num)
+                        for num in lecture_list])
         filename.write_text(header + body + footer)
 
     def update_lectures_in_master(self, lecture_list):
-        self.update_lectures_in_file(self.master_file, lecture_list)
+        self.update_lectures_in_file(self.master_file, lecture_list, True)
 
     def update_lectures_in_full(self, lecture_list):
         if self.full_file:
