@@ -2,10 +2,10 @@
 import subprocess
 from pathlib import Path
 
-from lectures import Lectures, number2filename
-from config import DEFAULT_MASTER_FILE_NAME, LECTURE_START_MARKER, LECTURE_END_MARKER, DEFAULT_IMPORT_INDENTATION
-from parse_counters import parse_counters, dict2setcounters
+from config import LECTURE_START_MARKER, LECTURE_END_MARKER, DEFAULT_IMPORT_INDENTATION
 from edit import edit
+from lectures import Lectures, number2filename
+from parse_counters import parse_counters, dict2setcounters
 
 
 class Notes:

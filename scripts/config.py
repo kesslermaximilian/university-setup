@@ -15,7 +15,6 @@ DATE_FORMAT = '%a %d %b %Y'
 LOCALE = "de_DE.utf8"
 COURSE_IGNORE_FILE = '.courseignore'
 COURSE_INFO_FILE_NAME = 'info.yaml'
-DEFAULT_MASTER_FILE_NAME = 'master.tex'
 MAX_LEN = 40
 LECTURE_START_MARKER = 'start lectures'
 LECTURE_END_MARKER = 'end lectures'
