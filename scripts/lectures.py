@@ -7,8 +7,8 @@ from datetime import datetime
 
 from config import DATE_FORMAT, LOCALE, DEFAULT_NEW_LECTURE_HEADER, DEFAULT_LECTURE_SEARCH_REGEX, \
     DEFAULT_NEW_LECTURE_TITLE
-from utils import get_week
 from edit import edit
+from utils import get_week
 
 # TODO
 locale.setlocale(locale.LC_TIME, LOCALE)

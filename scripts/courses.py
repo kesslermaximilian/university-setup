@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-from pathlib import Path
-import yaml
 import warnings
 
-from lectures import Lectures
-from notes import Notes
+import yaml
+
 from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE, \
     COURSE_INFO_FILE_NAME, FALLBACK_COURSE_INFO_FILE
+from notes import Notes
 from utils import merge_dictionaries
 
 
