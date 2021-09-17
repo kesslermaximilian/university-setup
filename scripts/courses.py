@@ -6,20 +6,29 @@ import warnings
 from lectures import Lectures
 from notes import Notes
 from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE, \
-    COURSE_INFO_FILE
+    COURSE_INFO_FILE_NAME, FALLBACK_COURSE_INFO_FILE
+from utils import merge_dictionaries
 
 
 class Course:
     def __init__(self, path):
         self.path = path
         self.name = path.stem
-        if (path / COURSE_INFO_FILE).is_file():
-            self.info = yaml.safe_load((path / COURSE_INFO_FILE).open())
+        if (path / COURSE_INFO_FILE_NAME).is_file():
+            self.info = yaml.safe_load((path / COURSE_INFO_FILE_NAME).open())
         else:
-            warnings.warn(f"No course info file found in directory '{path.stem}'. Place a {COURSE_INFO_FILE} "
+            warnings.warn(f"No course info file found in directory '{path.stem}'. Place a {COURSE_INFO_FILE_NAME} "
                           f"file in the directory or add the directory to the course ignore file named"
                           f" '{COURSE_IGNORE_FILE}' in your root directory ({ROOT})")
-            self.info = {'title': path.stem, 'short': path.stem}
+            self.info = {'title': str(path.stem) + ' (unnamed course)'}
+        if FALLBACK_COURSE_INFO_FILE.is_file():
+            fallback_file = yaml.safe_load(FALLBACK_COURSE_INFO_FILE.open())
+        else:
+            warnings.warn(f"No fallback course info file found. Program might crash if your provided info files do not"
+                          f"have the correct file format or are missing specified values. Provide the fallback course"
+                          f"file at {FALLBACK_COURSE_INFO_FILE}.")
+            fallback_file = {}
+        self.info = merge_dictionaries(self.info, fallback_file)
         self._notes = None
 
     @property
