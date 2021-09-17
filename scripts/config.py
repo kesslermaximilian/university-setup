@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import pytz
 # default is 'primary', if you are using a separate calendar for your course schedule,
 # your calendarId (which you can find by going to your Google Calendar settings, selecting
 # the relevant calendar and scrolling down to Calendar ID) probably looks like
@@ -23,3 +23,4 @@ DEFAULT_NEW_LECTURE_TITLE = 'Untitled'
 DEFAULT_LECTURE_SEARCH_REGEX = r'lecture.*({\d*})?{(.*?)}{(.*)}'
 DEFAULT_IMPORT_INDENTATION = 4
 FALLBACK_COURSE_INFO_FILE = Path('fallback.yaml').resolve()
+TIMEZONE = pytz.timezone('CET')

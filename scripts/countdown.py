@@ -21,7 +21,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 from courses import Courses
-from config import USERCALENDARID
+from config import USERCALENDARID, TIMEZONE
 
 courses = Courses()
 
@@ -72,7 +72,7 @@ def formatdd(begin, end):
     minutes = math.ceil((end - begin).seconds / 60)
 
     if minutes == 1:
-        return '1 minuut'
+        return '1 minute'
 
     if minutes < 60:
         return f'{minutes} min'
@@ -81,9 +81,9 @@ def formatdd(begin, end):
     rest_minutes = minutes % 60
 
     if hours > 5 or rest_minutes == 0:
-        return f'{hours} uur'
+        return f'{hours} hours'
 
-    return '{}:{:02d} uur'.format(hours, rest_minutes)
+    return '{}:{:02d} h'.format(hours, rest_minutes)
 
 def location(text):
     if not text:
@@ -103,7 +103,7 @@ def text(events, now):
         if nxt:
             return join(
                 summary(nxt['summary']),
-                gray('over'),
+                gray('in'),
                 formatdd(now, nxt['start']),
                 location(nxt['location'])
             )
@@ -111,24 +111,24 @@ def text(events, now):
 
     nxt = next((e for e in events if e['start'] >= current['end']), None)
     if not nxt:
-        return join(gray('Einde over'), formatdd(now, current['end']) + '!')
+        return join(gray('Ends in'), formatdd(now, current['end']) + '!')
 
     if current['end'] == nxt['start']:
         return join(
-            gray('Einde over'),
+            gray('Ends in'),
             formatdd(now, current['end']) + gray('.'),
-            gray('Hierna'),
+            gray('Afterwards'),
             summary(nxt['summary']),
             location(nxt['location'])
         )
 
     return join(
-        gray('Einde over'),
+        gray('Ends in'),
         formatdd(now, current['end']) + gray('.'),
-        gray('Hierna'),
+        gray('Afterwards'),
         summary(nxt['summary']),
         location(nxt['location']),
-        gray('na een pauze van'),
+        gray('after a break of'),
         formatdd(current['end'], nxt['start'])
     )
 
@@ -160,7 +160,7 @@ def main():
 
     print('Authenticated')
     # Call the Calendar API
-    now = datetime.datetime.now(tz=TZ)
+    now = datetime.datetime.now(tz=TIMEZONE)
 
     morning = now.replace(hour=6, minute=0, microsecond=0)
     evening= now.replace(hour=23, minute=59, microsecond=0)
@@ -187,14 +187,14 @@ def main():
             if 'dateTime' in event['start']
         ]
 
-    events = get_events(userCalendarId)
+    events = get_events(USERCALENDARID)
     # events = get_events('primary') + get_events('school-calendar@import.calendar.google.com')
     print('Done')
 
     DELAY = 60
 
     def print_message():
-        now = datetime.datetime.now(tz=TZ)
+        now = datetime.datetime.now(tz=TIMEZONE)
         print(text(events, now))
         if now < evening:
             scheduler.enter(DELAY, 1, print_message)
