@@ -7,6 +7,7 @@ from datetime import datetime
 
 from config import DATE_FORMAT, LOCALE, DEFAULT_NEW_LECTURE_HEADER, DEFAULT_LECTURE_SEARCH_REGEX
 from utils import get_week
+from edit import edit
 
 # TODO
 locale.setlocale(locale.LC_TIME, LOCALE)
@@ -44,11 +45,7 @@ class Lecture:
         self.course = course
 
     def edit(self):
-        subprocess.Popen([
-            "x-terminal-emulator",
-            "-e", "zsh", "-i", "-c",
-            f"\\vim --servername kulak --remote-silent {str(self.file_path)}"
-        ])
+        edit(self.file_path)
 
     def __str__(self):
         return f'<Lecture {self.course.info["short"]} {self.number} "{self.title}">'

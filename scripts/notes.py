@@ -5,6 +5,7 @@ from pathlib import Path
 from lectures import Lectures, number2filename
 from config import DEFAULT_MASTER_FILE_NAME, LECTURE_START_MARKER, LECTURE_END_MARKER, DEFAULT_IMPORT_INDENTATION
 from parse_counters import parse_counters, dict2setcounters
+from edit import edit
 
 
 class Notes:
@@ -85,9 +86,26 @@ class Notes:
         if self.full_file:
             self.update_lectures_in_file(self.full_file, lecture_list)
 
+    def edit_master(self):
+        edit(self.master_file)
+
+    def edit_full(self):
+        edit(self.full_file)
+
     def compile_master(self):
         result = subprocess.run(
             ['latexmk', '-f', '-interaction=nonstopmode', str(self.master_file)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            cwd=str(self.root)
+        )
+        return result.returncode
+
+    def compile_full(self):
+        if not self.full_file:
+            return 0
+        result = subprocess.run(
+            ['latexmk', '-f', '-interaction=nonstopmode', str(self.full_file)],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             cwd=str(self.root)
