@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import subprocess
 from pathlib import Path
+from typing import Dict
 
 from config import LECTURE_START_MARKER, LECTURE_END_MARKER, DEFAULT_IMPORT_INDENTATION
 from edit import edit
@@ -10,12 +11,12 @@ from parse_counters import parse_counters, dict2setcounters
 
 class Notes:
     def __init__(self, course):
-        self.course = course
-        self.info = course.info['notes']
-        self.root = course.path / self.info['path']
+        self.course = course  # A course
+        self.info: Dict = course.info['notes']
+        self.root: Path = course.path / self.info['path']
         self.root.mkdir(parents=True, exist_ok=True)
-        self.master_file = self.root / self.info['master_file']
-        self.full_file = self.root / self.info['full_file']
+        self.master_file: Path = self.root / self.info['master_file']
+        self.full_file: Path = self.root / self.info['full_file']
         self._lectures = None
 
     @staticmethod
@@ -79,6 +80,20 @@ class Notes:
 
     def edit_full(self):
         edit(self.full_file)
+
+    def open_master(self):
+        result = subprocess.run(
+            ['zathura', str(self.master_file.with_suffix('.pdf'))],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+
+    def open_full(self):
+        result = subprocess.run(
+            ['zathura', str(self.full_file.with_suffix('.pdf'))],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
 
     def compile_master(self):
         result = subprocess.run(

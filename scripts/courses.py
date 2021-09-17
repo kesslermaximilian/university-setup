@@ -2,6 +2,7 @@
 import warnings
 
 import yaml
+from typing import List
 
 from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE, \
     COURSE_INFO_FILE_NAME, FALLBACK_COURSE_INFO_FILE
@@ -31,7 +32,7 @@ class Course:
         self._notes = None
 
     @property
-    def notes(self):
+    def notes(self) -> Notes:
         if not self._notes:
             self._notes = Notes(self)
         return self._notes
@@ -42,7 +43,7 @@ class Course:
         return self.path == other.path
 
 
-def ignored_courses():
+def ignored_courses() -> List[Course]:
     if (ROOT / COURSE_IGNORE_FILE).is_file():
         with open(ROOT / COURSE_IGNORE_FILE) as ignore:
             lines = ignore.readlines()
@@ -53,7 +54,7 @@ def ignored_courses():
     return []
 
 
-def read_files():
+def read_files() -> List[Course]:
     course_directories = [x for x in ROOT.iterdir() if x.is_dir() and x not in ignored_courses()]
     _courses = [Course(path) for path in course_directories]
     return sorted(_courses, key=lambda c: c.name)
@@ -64,7 +65,7 @@ class Courses(list):
         list.__init__(self, read_files())
 
     @property
-    def current(self):
+    def current(self) -> Course:
         return Course(CURRENT_COURSE_ROOT.resolve())
 
     @current.setter
