@@ -11,7 +11,10 @@ def parse_counters(filepath: Path, break_point: Dict) -> Dict:
     counters: Dict = {}
     with open(filepath) as f:
         for line in f:
-            counter, _, num = re.search(r"(.*): (\d*\.)*?(\d*)", line).groups()
+            match = re.search(r"(.*): (\d*\.)*?(\d+)", line)
+            if not match:
+                continue
+            counter, _, num = match.groups()
             num = int(num)
             if counter in break_point and num >= break_point[counter]:
                 return counters
