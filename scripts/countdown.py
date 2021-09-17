@@ -11,7 +11,6 @@ import math
 import sched
 import datetime
 import time
-import pytz
 from dateutil.parser import parse
 
 import http.client as httplib
@@ -21,14 +20,15 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 from courses import Courses
-from config import USERCALENDARID, TIMEZONE
+from config import USERCALENDARID, TIMEZONE, SCHEDULER_DELAY
 
 courses = Courses()
+
 
 def authenticate():
     print('Authenticating')
     # If modifying these scopes, delete the file token.pickle.
-    SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+    scopes = ['https://www.googleapis.com/auth/calendar.readonly']
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -44,7 +44,7 @@ def authenticate():
             creds.refresh(Request())
         else:
             print('Need to allow access')
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', scopes)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
@@ -53,20 +53,25 @@ def authenticate():
     service = build('calendar', 'v3', credentials=creds)
     return service
 
+
 def join(*args):
     return ' '.join(str(e) for e in args if e)
 
+
 def truncate(string, length):
-    ellipsis = ' ...'
+    ldots = ' ...'
     if len(string) < length:
         return string
-    return string[:length - len(ellipsis)] + ellipsis
+    return string[:length - len(ldots)] + ldots
+
 
 def summary(text):
     return truncate(re.sub(r'X[0-9A-Za-z]+', '', text).strip(), 50)
 
+
 def gray(text):
     return '%{F#999999}' + text + '%{F-}'
+
 
 def formatdd(begin, end):
     minutes = math.ceil((end - begin).seconds / 60)
@@ -77,13 +82,14 @@ def formatdd(begin, end):
     if minutes < 60:
         return f'{minutes} min'
 
-    hours = math.floor(minutes/60)
+    hours = math.floor(minutes / 60)
     rest_minutes = minutes % 60
 
     if hours > 5 or rest_minutes == 0:
         return f'{hours} hours'
 
     return '{}:{:02d} h'.format(hours, rest_minutes)
+
 
 def location(text):
     if not text:
@@ -95,8 +101,9 @@ def location(text):
 
     return f'{gray("in")} {match.group(1)}'
 
+
 def text(events, now):
-    current = next((e for e in events if e['start'] < now and  now < e['end']), None)
+    current = next((e for e in events if e['start'] < now < e['end']), None)
 
     if not current:
         nxt = next((e for e in events if now <= e['start']), None)
@@ -150,11 +157,6 @@ def main():
     scheduler = sched.scheduler(time.time, time.sleep)
 
     print('Initializing')
-    if 'TZ' in os.environ:
-        TZ = pytz.timezone(os.environ['TZ'])
-    else:
-        print("Warning: TZ environ variable not set")
-
 
     service = authenticate()
 
@@ -163,7 +165,7 @@ def main():
     now = datetime.datetime.now(tz=TIMEZONE)
 
     morning = now.replace(hour=6, minute=0, microsecond=0)
-    evening= now.replace(hour=23, minute=59, microsecond=0)
+    evening = now.replace(hour=23, minute=59, microsecond=0)
 
     print('Searching for events')
 
@@ -191,17 +193,15 @@ def main():
     # events = get_events('primary') + get_events('school-calendar@import.calendar.google.com')
     print('Done')
 
-    DELAY = 60
-
     def print_message():
         now = datetime.datetime.now(tz=TIMEZONE)
         print(text(events, now))
         if now < evening:
-            scheduler.enter(DELAY, 1, print_message)
+            scheduler.enter(SCHEDULER_DELAY, 1, print_message)
 
     for event in events:
         # absolute entry, priority 1
-        scheduler.enterabs(event['start'].timestamp(), 1, activate_course, argument=(event, ))
+        scheduler.enterabs(event['start'].timestamp(), 1, activate_course, argument=(event,))
 
     # Immediate, priority 1
     scheduler.enter(0, 1, print_message)
@@ -217,6 +217,7 @@ def wait_for_internet_connection(url, timeout=1):
             return True
         except:
             conn.close()
+
 
 if __name__ == '__main__':
     os.chdir(sys.path[0])

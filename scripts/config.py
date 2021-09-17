@@ -24,3 +24,4 @@ DEFAULT_LECTURE_SEARCH_REGEX = r'lecture.*({\d*})?{(.*?)}{(.*)}'
 DEFAULT_IMPORT_INDENTATION = 4
 FALLBACK_COURSE_INFO_FILE = Path('fallback.yaml').resolve()
 TIMEZONE = pytz.timezone('CET')
+SCHEDULER_DELAY = 60
