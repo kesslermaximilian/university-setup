@@ -1,0 +1,20 @@
+title: 'Unnamed course'
+short: 'unnamed'
+language: 'english'
+links:
+    url: ''
+    ecampus: ''
+    sciebo: ''
+    basis: ''
+    github: ''
+exercises:
+    path: 'ub'
+    name: 'Maximilian Keßler'
+literature:
+    path: 'doc'
+notes:
+    path: '.'
+    master_file: 'master.tex'
+    full_file: 'full.tex'
+    lectures:
+        path: '.'

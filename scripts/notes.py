@@ -11,23 +11,11 @@ from edit import edit
 class Notes:
     def __init__(self, course):
         self.course = course
-        if 'notes' in course.info:
-            self.info = course.info['notes']
-        else:
-            self.info = []
-        if 'path' in self.info:
-            self.root = course.path / self.info['path']
-            self.root.mkdir(parents=True, exist_ok=True)
-        else:
-            self.root = course.path
-        if 'master_file' in self.info:
-            self.master_file = self.root / self.info['master_file']
-        else:
-            self.master_file = self.root / DEFAULT_MASTER_FILE_NAME
-        if 'full_file' in self.info:
-            self.full_file: Path = self.root / self.info['full_file']
-        else:
-            self.full_file: Path = None
+        self.info = course.info['notes']
+        self.root = course.path / self.info['path']
+        self.root.mkdir(parents=True, exist_ok=True)
+        self.master_file = self.root / self.info['master_file']
+        self.full_file = self.root / self.info['full_file']
         self._lectures = None
 
     @staticmethod

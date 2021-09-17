@@ -22,4 +22,4 @@ LECTURE_END_MARKER = 'end lectures'
 DEFAULT_NEW_LECTURE_HEADER = r'\lecture[]{{{date}}}{{{title}}}'
 DEFAULT_LECTURE_SEARCH_REGEX = r'lecture.*({\d*})?{(.*?)}{(.*)}'
 DEFAULT_IMPORT_INDENTATION = 4
-FALLBACK_COURSE_INFO_FILE = Path('info.yaml').resolve()
+FALLBACK_COURSE_INFO_FILE = Path('fallback.yaml').resolve()
