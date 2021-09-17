@@ -5,7 +5,8 @@ import re
 import warnings
 from datetime import datetime
 
-from config import DATE_FORMAT, LOCALE, DEFAULT_NEW_LECTURE_HEADER, DEFAULT_LECTURE_SEARCH_REGEX
+from config import DATE_FORMAT, LOCALE, DEFAULT_NEW_LECTURE_HEADER, DEFAULT_LECTURE_SEARCH_REGEX, \
+    DEFAULT_NEW_LECTURE_TITLE
 from utils import get_week
 from edit import edit
 
@@ -117,7 +118,8 @@ class Lectures(list):
         date = today.strftime(DATE_FORMAT)
 
         vimtex_root_str = f"%! TEX root = {str(os.path.relpath(self.notes.master_file, self.root))}\n"
-        header_str = DEFAULT_NEW_LECTURE_HEADER.format(number=new_lecture_number, date=date, title='Untitled')
+        header_str = DEFAULT_NEW_LECTURE_HEADER.format(
+            number=new_lecture_number, date=date, title=DEFAULT_NEW_LECTURE_TITLE)
         new_lecture_path.touch()
         new_lecture_path.write_text(vimtex_root_str + header_str)
 
