@@ -7,6 +7,7 @@ from typing import List
 from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_COURSE_WATCH_FILE, COURSE_IGNORE_FILE, \
     COURSE_INFO_FILE_NAME, FALLBACK_COURSE_INFO_FILE
 from notes import Notes
+from links import Links
 from utils import merge_dictionaries
 
 
@@ -30,6 +31,13 @@ class Course:
             fallback_file = {}
         self.info = merge_dictionaries(self.info, fallback_file)
         self._notes = None
+        self._links = None
+
+    @property
+    def links(self) -> Links:
+        if not self._links:
+            self._links = Links(self)
+        return self._links
 
     @property
     def notes(self) -> Notes:
