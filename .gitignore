@@ -2,3 +2,5 @@
 scripts/__pycache__
 scripts/test.py
 scripts/.idea
+scripts/credentials.json
+scripts/token.pickle
