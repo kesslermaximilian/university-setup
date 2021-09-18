@@ -18,6 +18,7 @@ class Notes:
         self.root.mkdir(parents=True, exist_ok=True)
         self.master_file: Path = self.root / self.info['master_file']
         self.full_file: Path = self.root / self.info['full_file']
+        self.texinputs: Path = self.root / self.info['texinputs']
         self._lectures = None
 
     @staticmethod
