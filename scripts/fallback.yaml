@@ -14,6 +14,7 @@ literature:
     path: 'doc'
 notes:
     path: '.'
+    texinputs: '.'
     master_file: 'master.tex'
     full_file: 'full.tex'
     lectures:
