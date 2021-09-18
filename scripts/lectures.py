@@ -125,6 +125,6 @@ class Lectures(list):
 
         self.read_files()
 
-        lec = Lecture(new_lecture_path, self.course)
+        lec = Lecture(new_lecture_path, self.notes)
 
         return lec
