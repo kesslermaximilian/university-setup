@@ -81,7 +81,7 @@ class Notes:
             self.update_lectures_in_file(self.full_file, lecture_list)
 
     def edit_master(self):
-        edit(self.master_file)
+        edit(self.master_file, rootpath=self.root, texinputs=self.texinputs)
 
     def edit_full(self):
         edit(self.full_file)
