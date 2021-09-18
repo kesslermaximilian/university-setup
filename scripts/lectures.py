@@ -23,7 +23,7 @@ def filename2number(s):
 
 
 class Lecture:
-    def __init__(self, file_path, course):
+    def __init__(self, file_path, notes):
         with file_path.open() as f:
             for line in f:
                 lecture_match = re.search(DEFAULT_LECTURE_SEARCH_REGEX, line)
@@ -52,10 +52,10 @@ class Lecture:
         self.week = week
         self.number = filename2number(file_path.stem)
         self.title = title
-        self.course = course
+        self.notes = notes
 
     def edit(self):
-        edit(self.file_path)
+        edit(self.file_path, rootpath=self.notes.root, texinputs=self.notes.texinputs)
 
     def __str__(self):
         return f'<Lecture {self.course.info["short"]} {self.number} "{self.title}">'
@@ -78,7 +78,7 @@ class Lectures(list):
 
     def read_files(self):
         files = self.root.glob('lec_*.tex')
-        return sorted((Lecture(f, self.course) for f in files), key=lambda l: l.number)
+        return sorted((Lecture(f, self.notes) for f in files), key=lambda l: l.number)
 
     def parse_lecture_spec(self, string):
         if len(self) == 0:
