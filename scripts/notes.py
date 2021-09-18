@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import os
 import subprocess
 from pathlib import Path
 from typing import Dict
@@ -81,10 +82,10 @@ class Notes:
             self.update_lectures_in_file(self.full_file, lecture_list)
 
     def edit_master(self):
-        edit(self.master_file, rootpath=self.root, texinputs=self.texinputs)
+        edit(self.master_file, rootpath=self.root, env=self.environment())
 
     def edit_full(self):
-        edit(self.full_file)
+        edit(self.full_file, rootpath=self.root, env=self.environment())
 
     def open_master(self):
         result = subprocess.run(
@@ -104,10 +105,11 @@ class Notes:
 
     def compile_master(self):
         result = subprocess.run(
-            ['latexmk', '-f', '-interaction=nonstopmode', str(self.master_file)],
+            ['latexmk', '-f', '-interaction=nonstopmode', '-dvi-', '-pdf', str(self.master_file)],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
-            cwd=str(self.root)
+            cwd=str(self.root),
+            env=self.environment()
         )
         return result.returncode
 
@@ -115,12 +117,18 @@ class Notes:
         if not self.full_file:
             return 0
         result = subprocess.run(
-            ['latexmk', '-f', '-interaction=nonstopmode', str(self.full_file)],
+            ['latexmk', '-f', '-interaction=nonstopmode', '-dvi-', '-pdf', str(self.full_file)],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
-            cwd=str(self.root)
+            cwd=str(self.root),
+            env=self.environment()
         )
         return result.returncode
+
+    def environment(self):
+        env = os.environ
+        env["TEXINPUTS"] = str(self.texinputs) + '//:'
+        return env
 
     @property
     def lectures(self):

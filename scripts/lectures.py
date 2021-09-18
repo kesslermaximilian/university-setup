@@ -55,7 +55,7 @@ class Lecture:
         self.notes = notes
 
     def edit(self):
-        edit(self.file_path, rootpath=self.notes.root, texinputs=self.notes.texinputs)
+        edit(self.file_path, rootpath=self.notes.root, env=self.notes.environment())
 
     def __str__(self):
         return f'<Lecture {self.course.info["short"]} {self.number} "{self.title}">'
