@@ -91,6 +91,7 @@ class Notes:
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL
         )
+        return result.returncode
 
     def open_full(self):
         result = subprocess.run(
@@ -98,6 +99,7 @@ class Notes:
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL
         )
+        return result.returncode
 
     def compile_master(self):
         result = subprocess.run(
