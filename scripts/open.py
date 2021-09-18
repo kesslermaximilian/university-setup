@@ -8,7 +8,8 @@ def open_spec(specification: str):
 
     switcher = {
         'full': current.notes.open_full,
-        'master': current.notes.open_master
+        'master': current.notes.open_master,
+        'terminal': current.notes.open_terminal
     }
 
     if specification in switcher.keys():

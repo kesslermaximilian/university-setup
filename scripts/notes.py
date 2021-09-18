@@ -103,6 +103,11 @@ class Notes:
         )
         return result.returncode
 
+    def open_terminal(self):
+        result = subprocess.Popen(
+            ['termite'], env=self.environment(), cwd=self.root
+        )
+
     def compile_master(self):
         result = subprocess.run(
             ['latexmk', '-f', '-interaction=nonstopmode', '-dvi-', '-pdf', str(self.master_file)],
