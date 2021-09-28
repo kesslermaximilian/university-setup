@@ -1,5 +1,6 @@
 import subprocess
 
+
 def rofi(prompt, options, rofi_args=[], fuzzy=True):
     optionstr = '\n'.join(option.replace('\n', ' ') for option in options)
     args = ['rofi', '-sort', '-no-levenshtein-sort']
@@ -8,7 +9,6 @@ def rofi(prompt, options, rofi_args=[], fuzzy=True):
     args += ['-dmenu', '-p', prompt, '-format', 's', '-i']
     args += rofi_args
     args = [str(arg) for arg in args]
-
 
     result = subprocess.run(args, input=optionstr, stdout=subprocess.PIPE, universal_newlines=True)
     returncode = result.returncode
