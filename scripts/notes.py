@@ -6,7 +6,7 @@ from typing import Dict
 
 from config import LECTURE_START_MARKER, LECTURE_END_MARKER, DEFAULT_IMPORT_INDENTATION, \
     DEFAULT_LATEX_COUNTER_AUX_FILE_EXTENSION
-from edit import edit
+from window_subprocess import edit
 from lectures import Lectures, number2filename
 from parse_counters import parse_counters, dict2setcounters
 

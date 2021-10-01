@@ -7,7 +7,7 @@ from datetime import datetime
 
 from config import DATE_FORMAT, LOCALE, DEFAULT_NEW_LECTURE_HEADER, DEFAULT_LECTURE_SEARCH_REGEX, \
     DEFAULT_NEW_LECTURE_TITLE
-from edit import edit
+from window_subprocess import edit
 from utils import get_week
 
 # TODO
