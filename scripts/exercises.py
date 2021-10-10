@@ -98,4 +98,4 @@ class Exercises(list):
             course=self.course.info['title'],
             number=new_num
         ))
-        ExerciseWriteUp(new_dir, self.course).open()
+        return ExerciseWriteUp(new_dir, self.course)

@@ -42,8 +42,8 @@ def rofi_pick_exercise(spec: str = 'writeup'):
 
 
 if __name__ == '__main__':
-    if not len(sys.argv) == 1:
+    if not len(sys.argv) == 2:
         print('Please specify exactly one of "writeup", "solution" and "sheet"')
         exit(1)
-    rofi_pick_exercise('writeup')
+    rofi_pick_exercise(sys.argv[1])
     exit(0)
