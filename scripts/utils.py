@@ -13,6 +13,10 @@ def unbeautify(string):
     return string.replace(' ', '-').lower()
 
 
+def normalize(string):
+    return string.lower().replace('ä', 'ae').replace('ö', 'oe').replace('ü', 'ue').replace('ß', 'ss')
+
+
 def generate_short_title(title):
     short_title = title or 'Untitled'
     if len(title) >= MAX_LEN:

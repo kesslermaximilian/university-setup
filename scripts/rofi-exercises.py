@@ -37,13 +37,13 @@ def rofi_pick_exercise(spec: str = 'writeup'):
 
     if key == 0:
         sorted_ex[index].open()
-    elif key == 1:
-        pass  # TODO: make new exercise
+    elif key == 1 and spec == 'writeup':
+        exercises.new_writeup()
 
 
 if __name__ == '__main__':
     if not len(sys.argv) == 1:
         print('Please specify exactly one of "writeup", "solution" and "sheet"')
         exit(1)
-    rofi_pick_exercise('sheet')
+    rofi_pick_exercise('writeup')
     exit(0)

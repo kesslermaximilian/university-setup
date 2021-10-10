@@ -1,6 +1,8 @@
 from file_list import Files, FileHandle, FileType
 from pathlib import Path
 from typing import Dict
+from utils import normalize
+from config import NEW_EXERCISE_SHEET_HEADER
 
 
 class ExerciseWriteUp(FileHandle):
@@ -70,6 +72,30 @@ class Exercises(list):
             self._writeups = sorted((ExerciseWriteUp(d, self.course) for d in dirs), key=lambda e: e.number)
         return self._writeups
 
-    def read_write_up_dirs(self):
-        dirs = self.root.iterdir()
-        return sorted((ExerciseWriteUp(d, self.course) for d in dirs if d is not self.sheets), key=lambda e: e.number)
+    @staticmethod
+    def __generate_name(name: str):
+        return normalize(name.split(' ')[-1])
+
+    def __generate_names(self):
+        names = self.info['name']
+        if type(names) == str:
+            return self.__generate_name(names)
+        elif type(names) == list:
+            return '_'.join(map(self.__generate_name, names))
+
+    def new_writeup(self):
+        new_num = max(self.writeups, key=lambda w: w.number).number + 1
+        new_dir = self.root / 'ub{num}'.format(num=new_num)
+        new_dir.mkdir(parents=True, exist_ok=False)
+        new_file = new_dir / '{names}_{course}_sheet_{num}.tex'.format(
+            names=self.__generate_names(),
+            course=normalize(self.course.info['short']),
+            num=new_num
+        )
+        new_file.write_text(NEW_EXERCISE_SHEET_HEADER.format(
+            language='ngerman' if self.course.info['language'] == 'german' else 'english',
+            author=self.info['name'] if type(self.info['name']) == str else ', '.join(self.info['name']),
+            course=self.course.info['title'],
+            number=new_num
+        ))
+        ExerciseWriteUp(new_dir, self.course).open()
