@@ -9,6 +9,7 @@ from config import ROOT, CURRENT_COURSE_ROOT, CURRENT_COURSE_SYMLINK, CURRENT_CO
 from notes import Notes
 from links import Links
 from utils import merge_dictionaries
+from exercises import Exercises
 
 
 class Course:
@@ -32,6 +33,7 @@ class Course:
         self.info = merge_dictionaries(self.info, fallback_file)
         self._notes = None
         self._links = None
+        self._exercises = None
 
     @property
     def links(self) -> Links:
@@ -44,6 +46,12 @@ class Course:
         if not self._notes:
             self._notes = Notes(self)
         return self._notes
+
+    @property
+    def exercises(self) -> Exercises:
+        if not self._exercises:
+            self._exercises = Exercises(self)
+        return self._exercises
 
     def __eq__(self, other):
         if other is None:
