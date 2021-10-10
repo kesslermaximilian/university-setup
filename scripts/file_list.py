@@ -3,13 +3,20 @@ import re
 import subprocess
 import warnings
 from pathlib import Path
-from window_subprocess import open_pdf
+from window_subprocess import open_pdf, edit
+from enum import Enum
+
+
+class FileType(Enum):
+    pdf = 'pdf'
+    tex = 'tex'
 
 
 class FileHandle:
-    def __init__(self, file_path: Path):
+    def __init__(self, file_path: Path, file_type: FileType = FileType.pdf):
         self.path = file_path
-        match = re.match(r'[\D]*(\d+)[\D]*\.pdf', file_path.name)
+        self.file_type = file_type
+        match = re.match(r'[\D]*(\d+)[\D]*\.' + file_type.value, file_path.name)
         if match is None:
             warnings.warn(f'Invalid format in file {str(file_path)}: Could not parse number.')
             self.number = -1
@@ -17,7 +24,20 @@ class FileHandle:
             self.number = int(match.group(1))
     
     def open(self):
-        open_pdf(self.path)
+        if self.file_type == FileType.pdf:
+            open_pdf(self.path)
+            return 0
+        elif self.file_type == FileType.tex:
+            edit(self.path)
+            return 0
+        return 1
+
+    def edit(self):
+        if self.file_type == FileType.tex:
+            edit(self.path)
+            return 0
+        else:
+            return 1
 
 
 class Files(list):

@@ -1,16 +1,13 @@
-from file_list import Files
+from file_list import Files, FileHandle, FileType
 from pathlib import Path
 from typing import Dict
 
 
-class ExerciseWriteUp:
+class ExerciseWriteUp(FileHandle):
     def __init__(self, root_dir: Path, course):
         self.root_dir = root_dir
         self.course = course
-        self.number = 1
-
-    def edit(self):
-        pass
+        FileHandle.__init__(self, next(self.root_dir.rglob('*.tex')), FileType.tex)
 
 
 class Exercise:
@@ -53,6 +50,7 @@ class Exercises(list):
         self._solutions = None
         self._writeups = None
         self._sheets = Files(self.sheet_root)
+        self.ignored_folders = [self.sheet_root, self.solutions_root]
         list.__init__(self, (Exercise(self.course, num) for num in map(lambda s: s.number, self._sheets)))
 
     @property
@@ -68,8 +66,7 @@ class Exercises(list):
     @property
     def writeups(self):
         if not self._writeups:
-            dirs = (d for d in self.root.iterdir()
-                    if d.root is not self.sheet_root.root and d.root is not self.solutions_root.root)
+            dirs = list(d for d in self.root.iterdir() if d.is_dir() and d not in self.ignored_folders)
             self._writeups = sorted((ExerciseWriteUp(d, self.course) for d in dirs), key=lambda e: e.number)
         return self._writeups
 

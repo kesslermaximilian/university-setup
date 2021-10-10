@@ -7,7 +7,7 @@ import os
 
 def edit(filepath: Path, rootpath: Path = None, env=os.environ):
     if not rootpath:
-        rootpath = filepath
+        rootpath = filepath.root
     subprocess.Popen([
         "termite",
         "-e",
