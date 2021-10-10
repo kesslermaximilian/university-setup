@@ -10,6 +10,8 @@ links:
 exercises:
     path: 'ub'
     name: 'Maximilian Keßler'
+    sheets: 'sheets'
+    solutions: 'solutions'
 literature:
     path: 'doc'
 notes:
