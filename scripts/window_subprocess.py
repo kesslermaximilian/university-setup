@@ -5,13 +5,13 @@ from pathlib import Path
 import os
 
 
-def edit(filepath: Path, rootpath: Path = None, env=os.environ):
+def edit(filepath: Path, rootpath: Path = None, env=os.environ, servername='tex lecture'):
     if not rootpath:
         rootpath = filepath.root
     subprocess.Popen([
         "termite",
         "-e",
-        f"vim --servername tex-vorlesung --remote-silent {str(filepath)}"
+        f"vim --servername {servername} --remote-silent {str(filepath)}"
     ], env=env, cwd=str(rootpath))
 
 
