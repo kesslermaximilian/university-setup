@@ -84,8 +84,11 @@ class Exercises(list):
             return '_'.join(map(self.__generate_name, names))
 
     def new_writeup(self):
-        new_num = max(self.writeups, key=lambda w: w.number).number + 1
-        new_dir = self.root / 'ub{num}'.format(num=new_num)
+        try:
+            new_num = max(self.writeups, key=lambda w: w.number).number + 1
+        except ValueError:
+            new_num = 1
+        new_dir = self.root / 'ub{:02d}'.format(new_num)
         new_dir.mkdir(parents=True, exist_ok=False)
         new_file = new_dir / '{names}_{course}_sheet_{num}.tex'.format(
             names=self.__generate_names(),
