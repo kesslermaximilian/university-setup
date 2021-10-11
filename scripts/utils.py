@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 from typing import Dict
 import warnings
@@ -27,6 +28,14 @@ def generate_short_title(title):
 
 def get_week(d=datetime.today()):
     return (int(d.strftime("%W")) + 52 - 5) % 52
+
+
+def parse_zoom_link(browser_join_link: str):
+    match = re.search(r'(?:/j/|&confno=)(?P<confno>\d*)(?:&zc=0)?(?:\?|&)pwd=(?P<pwd>.*?)(?:#success|$)', browser_join_link)
+    if not match:
+        return None
+    else:
+        return match.groupdict()['confno'], match.groupdict()['pwd']
 
 
 def merge_dictionaries(main: Dict, fallback: Dict):
