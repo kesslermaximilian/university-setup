@@ -48,6 +48,7 @@ class Notes:
             self.update_lectures_in_master([1])
         else:
             self.update_lectures_in_master([lec.number - 1, lec.number])
+        self._lectures = None  # This causes the lectures to be re-computed
         self.update_lectures_in_full(self.lectures.parse_range_string('all'))
         return lec
 
