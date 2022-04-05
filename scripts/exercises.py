@@ -52,7 +52,7 @@ class Exercises(list):
         self._solutions = None
         self._writeups = None
         self._sheets = Files(self.sheet_root)
-        self.ignored_folders = [self.sheet_root, self.solutions_root]
+        self.ignored_folders = [self.sheet_root, self.solutions_root, self.root / 'LatexPackagesBuild', self.root / '.git']
         list.__init__(self, (Exercise(self.course, num) for num in map(lambda s: s.number, self._sheets)))
 
     @property
