@@ -46,7 +46,7 @@ def main(args):
     arglist = []
     if len(args) > 1:
         path = Path(args[1])
-        arglist = list(path.glob('*.aux'))
+        arglist = list(path.glob('*.aux')) + list(path.glob('build/*.aux'))
     else:
         arglist = ['/home/maximilian/current_course/full.aux']
 
@@ -61,6 +61,7 @@ def main(args):
     else:
         command = selected
     return command.strip()
+   
 
 
 if __name__ == '__main__':
