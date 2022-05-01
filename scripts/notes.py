@@ -63,8 +63,11 @@ class Notes:
         if not setcounters:
             return ''
         if lec - 1 not in lecture_list and self.full_file:
+            cnt_file = self.full_file.with_suffix(DEFAULT_LATEX_COUNTER_AUX_FILE_EXTENSION)
+            if not cnt_file.exists():
+                cnt_file = self.full_file.parent / 'build' / cnt_file.name
             return dict2setcounters(parse_counters(
-                self.full_file.with_suffix(DEFAULT_LATEX_COUNTER_AUX_FILE_EXTENSION),
+                cnt_file,
                 {'lecture': lec}
             ))
         return ''
